@@ -1,0 +1,49 @@
+.elements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
+  column-gap: 17px;
+  row-gap: 21px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.elements__grid {
+  max-width: 282px;
+  min-height: 361px;
+}
+
+.elements__grid-image {
+  width: 100%;
+  display: block;
+}
+
+.elements__grid-text {
+  max-width: 282px;
+  background-color: white;
+  border-radius: 0 0 10px 10px; /* Apenas os cantos inferiores arredondados */
+  display: flex;
+  align-items: center;
+}
+
+.elements__grid-text-name {
+  font-family: "Inter Regular";
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0;
+  background-color: white;
+  color: black;
+  padding: 25px 0 31px 21px;
+  margin: 0;
+  border-radius: 0 0 10px 10px;
+}
+
+.elements__like-button {
+  background-image: url(/images/Group.svg);
+  width: 21px;
+  height: 19px;
+  background-color: white;
+  border: none;
+  margin: auto;
+  margin-right: 30px;
+}
