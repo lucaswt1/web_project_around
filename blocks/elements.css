@@ -47,3 +47,15 @@
   margin: auto;
   margin-right: 30px;
 }
+
+@media screen and (max-width: 880px) {
+  .elements {
+    max-width: 600px;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .elements {
+    max-width: 282px;
+  }
+}
