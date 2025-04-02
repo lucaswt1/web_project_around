@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
   column-gap: 17px;
-  row-gap: 21px;
+  row-gap: 20px;
   max-width: 880px;
   margin: 0 auto;
 }
@@ -36,16 +36,24 @@
   padding: 25px 0 31px 21px;
   margin: 0;
   border-radius: 0 0 10px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .elements__like-button {
   background-image: url(/images/Group.svg);
-  width: 21px;
+  min-width: 21px;
   height: 19px;
   background-color: white;
   border: none;
   margin: auto;
   margin-right: 30px;
+}
+
+.elements__like-button:hover {
+  opacity: 50%;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 880px) {
