@@ -42,7 +42,7 @@
 }
 
 .elements__like-button {
-  background-image: url(/images/Group.svg);
+  background-image: url(../images/like-button.png);
   min-width: 21px;
   height: 19px;
   background-color: white;
