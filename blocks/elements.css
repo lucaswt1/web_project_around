@@ -49,6 +49,7 @@
   border: none;
   margin: auto;
   margin-right: 30px;
+  background-repeat: no-repeat;
 }
 
 .elements__like-button:hover {
