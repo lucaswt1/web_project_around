@@ -1,5 +1,5 @@
 .popup {
-  display: block; /* Garante que o popup seja exibido */
+  /* display: block; Garante que o popup seja exibido */
   position: fixed; /* Posiciona o popup na tela */
   top: 0;
   left: 0;
@@ -92,6 +92,10 @@
 .popup__save-button:hover {
   opacity: 80%;
   cursor: pointer;
+}
+
+.popup__opened {
+  display: block;
 }
 
 @media screen and (max-width: 580px) {
