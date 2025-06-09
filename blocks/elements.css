@@ -9,11 +9,15 @@
 
 .elements__grid {
   max-width: 282px;
+  position: relative;
 }
 
 .elements__grid-image {
   width: 100%;
+  height: 282px;
+  object-fit: cover;
   display: block;
+  border-radius: 10px 10px 0 0;
 }
 
 .elements__grid-text {
@@ -58,6 +62,24 @@
 
 .elements__like-button_active {
   background-image: url(../images/like-button-filled.png);
+}
+
+.elements__delete-button {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  background-image: url(../images/trash-icon.svg);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  width: 18px;
+  height: 19px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.elements__delete-button:hover {
+  opacity: 0.6;
 }
 
 @media screen and (max-width: 880px) {

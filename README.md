@@ -2,7 +2,7 @@
 
 1. O nome do projeto
 
-- web_project_around
+- web_project_around sprint 8
 
 2. Uma descrição do projeto e sua funcionalidade
 
