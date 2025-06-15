@@ -107,7 +107,11 @@ renderInitialCards();
 
 // Função para mostrar mensagem de erro
 function showInputError(input, errorElement) {
-  errorElement.textContent = input.validationMessage;
+  if (input.type === "url" && !input.validity.valid) {
+    errorElement.textContent = "Please enter a web address.";
+  } else {
+    errorElement.textContent = input.validationMessage;
+  }
   input.classList.add("popup__form-input_type_error");
 }
 
@@ -168,8 +172,28 @@ editButton.addEventListener("click", () => {
   openPopup(editProfilePopup);
 });
 
-// evento para abrir o popup de adicionar cartão
+// Seletores dos elementos de erro e botão do formulário de novo local
+const titleError = document.getElementById("card-title-error");
+const linkError = document.getElementById("card-link-error");
+const createButton = addCardForm.querySelector(".popup__save-button");
+
+// Eventos de input para validação em tempo real do formulário de novo local
+titleInput.addEventListener("input", () => {
+  checkInputValidity(titleInput, titleError);
+  toggleButtonState(addCardForm, createButton);
+});
+
+linkInput.addEventListener("input", () => {
+  checkInputValidity(linkInput, linkError);
+  toggleButtonState(addCardForm, createButton);
+});
+
+// Ao abrir o popup de novo local, apenas resetar o formulário
 addButton.addEventListener("click", () => {
+  addCardForm.reset();
+  hideInputError(titleInput, titleError);
+  hideInputError(linkInput, linkError);
+  toggleButtonState(addCardForm, createButton);
   openPopup(addCardPopup);
 });
 
@@ -188,9 +212,10 @@ editProfileForm.addEventListener("submit", (event) => {
   closePopup(editProfilePopup);
 });
 
-// adicionar novo cartão
+// Ao submeter o formulário de novo local, só permite se válido
 addCardForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  if (!addCardForm.checkValidity()) return;
 
   const newCardData = {
     name: titleInput.value,

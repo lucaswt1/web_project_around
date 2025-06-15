@@ -68,9 +68,13 @@
   width: 100%;
   margin: 30px 36px 0;
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding-bottom: 13px;
   color: black;
+}
+
+.popup__form-input:invalid:not(:placeholder-shown) {
+  border-bottom: 1px solid #ff0000;
 }
 
 .popup__save-button {
@@ -179,6 +183,10 @@
   color: black;
 }
 
+.popup__form-input:invalid:not(:placeholder-shown) {
+  border-bottom: 1px solid #ff0000;
+}
+
 .popup__save-button {
   font-family: "Inter Regular";
   font-weight: 400;
@@ -240,10 +248,6 @@
   background-color: transparent;
   align-self: flex-start;
   width: calc(100% - 72px);
-}
-
-.popup__form-input:invalid {
-  border-bottom: 1px solid #ff0000;
 }
 
 .popup__save-button:disabled {
