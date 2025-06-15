@@ -250,6 +250,16 @@
   width: calc(100% - 72px);
 }
 
+.popup__save-button_disabled {
+  background-color: #fff;
+  color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  box-shadow: none;
+  cursor: default;
+  opacity: 1;
+  pointer-events: none;
+}
+
 .popup__save-button:disabled {
   background-color: #fff;
   color: #bdbdbd;
@@ -257,4 +267,5 @@
   box-shadow: none;
   cursor: default;
   opacity: 1;
+  pointer-events: none;
 }

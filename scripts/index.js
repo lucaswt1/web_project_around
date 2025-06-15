@@ -1,29 +1,36 @@
-const editButton = document.querySelector(".profile__edit-button");
-const addButton = document.querySelector(".profile__add-button");
+// Botões
+const editProfileButton = document.querySelector(".profile__edit-button");
+const addCardButton = document.querySelector(".profile__add-button");
+const closeButtons = document.querySelectorAll(".popup__close-button");
 
+// Popups
 const editProfilePopup = document.querySelector(".popup_type_edit-profile");
 const addCardPopup = document.querySelector(".popup_type_add-card");
 const imagePopup = document.querySelector(".popup_type_image");
 
-const closeButtons = document.querySelectorAll(".popup__close-button");
-
-// campos do formulário de edição de perfil
+// Formulário de edição de perfil
+const profileForm = editProfilePopup.querySelector(".popup__form");
 const nameInput = document.querySelector("#name");
 const aboutInput = document.querySelector("#about-me");
-const editProfileForm = editProfilePopup.querySelector(".popup__form");
 
-// campos do formulário de adicionar cartão
-const titleInput = addCardPopup.querySelector("#card-title");
-const linkInput = addCardPopup.querySelector("#card-link");
-const addCardForm = addCardPopup.querySelector(".popup__form");
+// Formulário de adição de cartão
+const cardForm = addCardPopup.querySelector(".popup__form");
+const cardTitleInput = addCardPopup.querySelector("#card-title");
+const cardImageInput = addCardPopup.querySelector("#card-link");
 
-// dados atuais do perfil
+// Elementos do perfil
 const profileName = document.querySelector(".profile__name");
-const profileOccupation = document.querySelector(".profile__occupation");
+const profileDescription = document.querySelector(".profile__occupation");
 
-// elementos do popup de imagem
+// Elementos do popup de imagem
 const popupImage = imagePopup.querySelector(".popup__image");
-const popupCaption = imagePopup.querySelector(".popup__image-caption");
+const imageCaption = imagePopup.querySelector(".popup__image-caption");
+
+// Container de cartões
+const cardsContainer = document.querySelector(".elements");
+
+// Template do cartão
+const cardTemplate = document.querySelector("#card-template").content;
 
 // Array de cartões iniciais
 const initialCards = [
@@ -53,178 +60,124 @@ const initialCards = [
   },
 ];
 
-const cardTemplate = document.querySelector("#card-template").content;
-const elementsContainer = document.querySelector(".elements");
-
 function createCard(cardData) {
   const cardElement = cardTemplate
     .querySelector(".elements__grid")
     .cloneNode(true);
   const cardImage = cardElement.querySelector(".elements__grid-image");
-  const cardName = cardElement.querySelector(".elements__grid-text-name");
+  const cardTitle = cardElement.querySelector(".elements__grid-text-name");
   const likeButton = cardElement.querySelector(".elements__like-button");
   const deleteButton = cardElement.querySelector(".elements__delete-button");
 
   cardImage.src = cardData.link;
   cardImage.alt = `Fotografia de ${cardData.name}`;
-  cardName.textContent = cardData.name;
+  cardTitle.textContent = cardData.name;
 
-  // evento de clique na imagem para abrir o popup
   cardImage.addEventListener("click", () => {
-    popupImage.src = cardData.link;
-    popupImage.alt = `Visualização ampliada de ${cardData.name}`;
-    popupCaption.textContent = cardData.name;
-    openPopup(imagePopup);
+    openImagePopup(cardData);
   });
 
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("elements__like-button_active");
-  });
-
-  deleteButton.addEventListener("click", () => {
-    cardElement.remove();
-  });
+  likeButton.addEventListener("click", handleLikeCard);
+  deleteButton.addEventListener("click", handleDeleteCard);
 
   return cardElement;
+}
+
+function handleLikeCard(evt) {
+  evt.target.classList.toggle("elements__like-button_active");
+}
+
+function handleDeleteCard(evt) {
+  evt.target.closest(".elements__grid").remove();
+}
+
+function openImagePopup(cardData) {
+  popupImage.src = cardData.link;
+  popupImage.alt = `Visualização ampliada de ${cardData.name}`;
+  imageCaption.textContent = cardData.name;
+  openPopup(imagePopup);
 }
 
 function renderInitialCards() {
   initialCards.forEach((cardData) => {
     const cardElement = createCard(cardData);
-    elementsContainer.append(cardElement);
+    cardsContainer.append(cardElement);
   });
+}
+
+function handleOverlayClick(evt) {
+  if (evt.target.classList.contains("popup")) {
+    closePopup(evt.target);
+  }
+}
+
+function handleEscClose(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup__opened");
+    if (openedPopup) {
+      closePopup(openedPopup);
+    }
+  }
 }
 
 function openPopup(popup) {
   popup.classList.add("popup__opened");
+  document.addEventListener("keydown", handleEscClose);
+  popup.addEventListener("mousedown", handleOverlayClick);
 }
 
 function closePopup(popup) {
   popup.classList.remove("popup__opened");
+  document.removeEventListener("keydown", handleEscClose);
+  popup.removeEventListener("mousedown", handleOverlayClick);
 }
 
-renderInitialCards();
-
-// Função para mostrar mensagem de erro
-function showInputError(input, errorElement) {
-  if (input.type === "url" && !input.validity.valid) {
-    errorElement.textContent = "Please enter a web address.";
-  } else {
-    errorElement.textContent = input.validationMessage;
-  }
-  input.classList.add("popup__form-input_type_error");
-}
-
-// Função para esconder mensagem de erro
-function hideInputError(input, errorElement) {
-  errorElement.textContent = "";
-  input.classList.remove("popup__form-input_type_error");
-}
-
-// Função para checar validade e atualizar UI
-function checkInputValidity(input, errorElement) {
-  if (!input.validity.valid) {
-    showInputError(input, errorElement);
-  } else {
-    hideInputError(input, errorElement);
-  }
-}
-
-// Função para habilitar/desabilitar botão
-function toggleButtonState(form, button) {
-  if (!form.checkValidity()) {
-    button.disabled = true;
-  } else {
-    button.disabled = false;
-  }
-}
-
-// Seletores dos elementos de erro e botão
-const nameError = document.getElementById("name-error");
-const aboutError = document.getElementById("about-me-error");
-const saveButton = editProfileForm.querySelector(".popup__save-button");
-
-// Adiciona restrições aos inputs
-nameInput.required = true;
-nameInput.minLength = 2;
-nameInput.maxLength = 40;
-aboutInput.required = true;
-aboutInput.minLength = 2;
-aboutInput.maxLength = 200;
-
-// Eventos de input para validação em tempo real
-nameInput.addEventListener("input", () => {
-  checkInputValidity(nameInput, nameError);
-  toggleButtonState(editProfileForm, saveButton);
-});
-aboutInput.addEventListener("input", () => {
-  checkInputValidity(aboutInput, aboutError);
-  toggleButtonState(editProfileForm, saveButton);
-});
-
-// Ao abrir o popup, resetar erros e estado do botão
-editButton.addEventListener("click", () => {
+// Event Listeners
+editProfileButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
-  aboutInput.value = profileOccupation.textContent;
-  checkInputValidity(nameInput, nameError);
-  checkInputValidity(aboutInput, aboutError);
-  toggleButtonState(editProfileForm, saveButton);
+  aboutInput.value = profileDescription.textContent;
+
+  // Força a validação inicial dos campos
+  const event = new Event("input");
+  nameInput.dispatchEvent(event);
+  aboutInput.dispatchEvent(event);
+
   openPopup(editProfilePopup);
 });
 
-// Seletores dos elementos de erro e botão do formulário de novo local
-const titleError = document.getElementById("card-title-error");
-const linkError = document.getElementById("card-link-error");
-const createButton = addCardForm.querySelector(".popup__save-button");
-
-// Eventos de input para validação em tempo real do formulário de novo local
-titleInput.addEventListener("input", () => {
-  checkInputValidity(titleInput, titleError);
-  toggleButtonState(addCardForm, createButton);
-});
-
-linkInput.addEventListener("input", () => {
-  checkInputValidity(linkInput, linkError);
-  toggleButtonState(addCardForm, createButton);
-});
-
-// Ao abrir o popup de novo local, apenas resetar o formulário
-addButton.addEventListener("click", () => {
-  addCardForm.reset();
-  hideInputError(titleInput, titleError);
-  hideInputError(linkInput, linkError);
-  toggleButtonState(addCardForm, createButton);
+addCardButton.addEventListener("click", () => {
+  cardForm.reset();
   openPopup(addCardPopup);
 });
 
-// evento para fechar qualquer popup
-closeButtons.forEach((button) => {
-  const popup = button.closest(".popup");
-  button.addEventListener("click", () => closePopup(popup));
-});
-
-// Ao submeter, só permite se válido (já está prevenido pelo checkValidity)
-editProfileForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (!editProfileForm.checkValidity()) return;
+profileForm.addEventListener("submit", (evt) => {
+  evt.preventDefault();
   profileName.textContent = nameInput.value;
-  profileOccupation.textContent = aboutInput.value;
+  profileDescription.textContent = aboutInput.value;
   closePopup(editProfilePopup);
 });
 
-// Ao submeter o formulário de novo local, só permite se válido
-addCardForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (!addCardForm.checkValidity()) return;
-
+cardForm.addEventListener("submit", (evt) => {
+  evt.preventDefault();
   const newCardData = {
-    name: titleInput.value,
-    link: linkInput.value,
+    name: cardTitleInput.value,
+    link: cardImageInput.value,
   };
-
   const cardElement = createCard(newCardData);
-  elementsContainer.prepend(cardElement);
-
-  addCardForm.reset();
+  cardsContainer.prepend(cardElement);
+  cardForm.reset();
   closePopup(addCardPopup);
+});
+
+// Inicialização
+renderInitialCards();
+
+// Configuração da validação
+enableValidation({
+  formSelector: ".popup__form",
+  inputSelector: ".popup__form-input",
+  submitButtonSelector: ".popup__save-button",
+  inactiveButtonClass: "popup__save-button_disabled",
+  inputErrorClass: "popup__form-input_type_error",
+  errorClass: "popup__input-error_visible",
 });
