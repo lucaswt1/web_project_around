@@ -105,10 +105,66 @@ function closePopup(popup) {
 
 renderInitialCards();
 
-// evento para abrir o popup de edição de perfil
+// Função para mostrar mensagem de erro
+function showInputError(input, errorElement) {
+  errorElement.textContent = input.validationMessage;
+  input.classList.add("popup__form-input_type_error");
+}
+
+// Função para esconder mensagem de erro
+function hideInputError(input, errorElement) {
+  errorElement.textContent = "";
+  input.classList.remove("popup__form-input_type_error");
+}
+
+// Função para checar validade e atualizar UI
+function checkInputValidity(input, errorElement) {
+  if (!input.validity.valid) {
+    showInputError(input, errorElement);
+  } else {
+    hideInputError(input, errorElement);
+  }
+}
+
+// Função para habilitar/desabilitar botão
+function toggleButtonState(form, button) {
+  if (!form.checkValidity()) {
+    button.disabled = true;
+  } else {
+    button.disabled = false;
+  }
+}
+
+// Seletores dos elementos de erro e botão
+const nameError = document.getElementById("name-error");
+const aboutError = document.getElementById("about-me-error");
+const saveButton = editProfileForm.querySelector(".popup__save-button");
+
+// Adiciona restrições aos inputs
+nameInput.required = true;
+nameInput.minLength = 2;
+nameInput.maxLength = 40;
+aboutInput.required = true;
+aboutInput.minLength = 2;
+aboutInput.maxLength = 200;
+
+// Eventos de input para validação em tempo real
+nameInput.addEventListener("input", () => {
+  checkInputValidity(nameInput, nameError);
+  toggleButtonState(editProfileForm, saveButton);
+});
+aboutInput.addEventListener("input", () => {
+  checkInputValidity(aboutInput, aboutError);
+  toggleButtonState(editProfileForm, saveButton);
+});
+
+// Ao abrir o popup, resetar erros e estado do botão
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   aboutInput.value = profileOccupation.textContent;
+  checkInputValidity(nameInput, nameError);
+  checkInputValidity(aboutInput, aboutError);
+  toggleButtonState(editProfileForm, saveButton);
   openPopup(editProfilePopup);
 });
 
@@ -123,13 +179,12 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(popup));
 });
 
-// salvar dados e atualizar perfil
+// Ao submeter, só permite se válido (já está prevenido pelo checkValidity)
 editProfileForm.addEventListener("submit", (event) => {
   event.preventDefault();
-
+  if (!editProfileForm.checkValidity()) return;
   profileName.textContent = nameInput.value;
   profileOccupation.textContent = aboutInput.value;
-
   closePopup(editProfilePopup);
 });
 

@@ -227,3 +227,30 @@
     padding: 14px 96px;
   }
 }
+
+.popup__input-error {
+  color: #ff0000;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 5px 36px 0 36px;
+  min-height: 15px;
+  display: block;
+  text-align: left;
+  background: none;
+  background-color: transparent;
+  align-self: flex-start;
+  width: calc(100% - 72px);
+}
+
+.popup__form-input:invalid {
+  border-bottom: 1px solid #ff0000;
+}
+
+.popup__save-button:disabled {
+  background-color: #fff;
+  color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  box-shadow: none;
+  cursor: default;
+  opacity: 1;
+}
