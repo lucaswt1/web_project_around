@@ -1,3 +1,17 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+import { openPopup, closePopup } from "./utils.js";
+
+// Configuração da validação
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__form-input",
+  submitButtonSelector: ".popup__save-button",
+  inactiveButtonClass: "popup__save-button_disabled",
+  inputErrorClass: "popup__form-input_type_error",
+  errorClass: "popup__input-error_visible",
+};
+
 // Botões
 const editProfileButton = document.querySelector(".profile__edit-button");
 const addCardButton = document.querySelector(".profile__add-button");
@@ -60,49 +74,20 @@ const initialCards = [
   },
 ];
 
-function createCard(cardData) {
-  const cardElement = cardTemplate
-    .querySelector(".elements__grid")
-    .cloneNode(true);
-  const cardImage = cardElement.querySelector(".elements__grid-image");
-  const cardTitle = cardElement.querySelector(".elements__grid-text-name");
-  const likeButton = cardElement.querySelector(".elements__like-button");
-  const deleteButton = cardElement.querySelector(".elements__delete-button");
+// Instâncias dos validadores de formulário
+const editProfileValidator = new FormValidator(validationConfig, profileForm);
+const addCardValidator = new FormValidator(validationConfig, cardForm);
 
-  cardImage.src = cardData.link;
-  cardImage.alt = `Fotografia de ${cardData.name}`;
-  cardTitle.textContent = cardData.name;
-
-  cardImage.addEventListener("click", () => {
-    openImagePopup(cardData);
-  });
-
-  likeButton.addEventListener("click", handleLikeCard);
-  deleteButton.addEventListener("click", handleDeleteCard);
-
-  return cardElement;
-}
-
-function handleLikeCard(evt) {
-  evt.target.classList.toggle("elements__like-button_active");
-}
-
-function handleDeleteCard(evt) {
-  evt.target.closest(".elements__grid").remove();
-}
-
-function openImagePopup(cardData) {
-  popupImage.src = cardData.link;
-  popupImage.alt = `Visualização ampliada de ${cardData.name}`;
-  imageCaption.textContent = cardData.name;
+function handleCardClick(name, link) {
+  popupImage.src = link;
+  popupImage.alt = `Visualização ampliada de ${name}`;
+  imageCaption.textContent = name;
   openPopup(imagePopup);
 }
 
-function renderInitialCards() {
-  initialCards.forEach((cardData) => {
-    const cardElement = createCard(cardData);
-    cardsContainer.append(cardElement);
-  });
+function createCard(cardData) {
+  const card = new Card(cardData, "#card-template", handleCardClick);
+  return card.generateCard();
 }
 
 function handleOverlayClick(evt) {
@@ -120,33 +105,17 @@ function handleEscClose(evt) {
   }
 }
 
-function openPopup(popup) {
-  popup.classList.add("popup__opened");
-  document.addEventListener("keydown", handleEscClose);
-  popup.addEventListener("mousedown", handleOverlayClick);
-}
-
-function closePopup(popup) {
-  popup.classList.remove("popup__opened");
-  document.removeEventListener("keydown", handleEscClose);
-  popup.removeEventListener("mousedown", handleOverlayClick);
-}
-
 // Event Listeners
 editProfileButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   aboutInput.value = profileDescription.textContent;
-
-  // Força a validação inicial dos campos
-  const event = new Event("input");
-  nameInput.dispatchEvent(event);
-  aboutInput.dispatchEvent(event);
-
+  editProfileValidator.resetValidation();
   openPopup(editProfilePopup);
 });
 
 addCardButton.addEventListener("click", () => {
   cardForm.reset();
+  addCardValidator.resetValidation();
   openPopup(addCardPopup);
 });
 
@@ -170,14 +139,11 @@ cardForm.addEventListener("submit", (evt) => {
 });
 
 // Inicialização
-renderInitialCards();
-
-// Configuração da validação
-enableValidation({
-  formSelector: ".popup__form",
-  inputSelector: ".popup__form-input",
-  submitButtonSelector: ".popup__save-button",
-  inactiveButtonClass: "popup__save-button_disabled",
-  inputErrorClass: "popup__form-input_type_error",
-  errorClass: "popup__input-error_visible",
+initialCards.forEach((cardData) => {
+  const cardElement = createCard(cardData);
+  cardsContainer.append(cardElement);
 });
+
+// Habilitando validação dos formulários
+editProfileValidator.enableValidation();
+addCardValidator.enableValidation();
