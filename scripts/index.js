@@ -138,6 +138,12 @@ cardForm.addEventListener("submit", (evt) => {
   closePopup(addCardPopup);
 });
 
+// Event listeners botões de fechar
+closeButtons.forEach((button) => {
+  const popup = button.closest(".popup");
+  button.addEventListener("click", () => closePopup(popup));
+});
+
 // Inicialização
 initialCards.forEach((cardData) => {
   const cardElement = createCard(cardData);
