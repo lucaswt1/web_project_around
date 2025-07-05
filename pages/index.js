@@ -46,24 +46,18 @@ const validationConfig = {
 // Seletores
 const profileEditButton = document.querySelector(".profile__edit-button");
 const addCardButton = document.querySelector(".profile__add-button");
-const profileFormElement = document.querySelector(
-  ".popup_type_edit-profile .popup__form"
-);
-const addCardFormElement = document.querySelector(
-  ".popup_type_add-card .popup__form"
-);
 const nameInput = document.querySelector("#name");
 const aboutInput = document.querySelector("#about-me");
 
+// Formulários
+const profileForm = document.querySelector(
+  ".popup_type_edit-profile .popup__form"
+);
+const addCardForm = document.querySelector(".popup_type_add-card .popup__form");
+
 // Instâncias dos validadores
-const editProfileValidator = new FormValidator(
-  validationConfig,
-  profileFormElement
-);
-const addCardValidator = new FormValidator(
-  validationConfig,
-  addCardFormElement
-);
+const editProfileValidator = new FormValidator(validationConfig, profileForm);
+const addCardValidator = new FormValidator(validationConfig, addCardForm);
 
 // Instância de UserInfo
 const userInfo = new UserInfo({
