@@ -1,24 +1,44 @@
-# Tripleten web_project_around
+# Around The U.S.
 
-1. O nome do projeto
+## Project Description and Functionality
 
-- web_project_around sprint 10
+Around The U.S. is an interactive social media platform where users can share photos of interesting places across the United States. The application allows users to view, like, add, and remove photo cards, as well as edit their profile information and avatar photo.
 
-2. Uma descrição do projeto e sua funcionalidade
+**Main Features:**
 
-- starting studies on javascript, DOM and how to use it into a practical project. It's a kind of social media.
+- View and interact with photo cards from different locations
+- Like and unlike cards from other users
+- Add new photo cards with custom images and descriptions
+- Edit user profile (name and description)
+- Update profile avatar photo
+- Delete own photo cards with confirmation dialog
+- Real-time synchronization with server API
+- Responsive design for all device sizes
 
-3. Technologies and techniques used
+## Technologies and Techniques Used
 
-- HTML
-- CSS3
-- JavaScript
-  - Classes and Modules
-  - Object-Oriented Programming
-  - DOM manipulation
-  - Form validation
-  - Event Listeners
+**Frontend Technologies:**
 
-4. O link para o GitHub Pages
+- HTML5: Semantic structure with proper accessibility
+- CSS3: Flexbox, Grid Layout, BEM methodology, media queries for responsive design
+- JavaScript ES6+: Classes, modules, async/await, DOM manipulation
 
-- https://lucaswt1.github.io/web_project_around/
+**Programming Techniques:**
+
+- Object-Oriented Programming with ES6 classes
+- API integration with fetch and Promise handling
+- HTML5 form validation with ValidityState
+- Event delegation and proper event handling
+- Error handling and user feedback (loading states)
+
+**Classes Implemented:**
+
+- `Api`: Manages all HTTP requests to the server
+- `Card`: Creates and manages individual photo cards
+- `Section`: Renders lists of elements
+- `Popup`: Base class for modal windows
+- `PopupWithForm`: Form-based popups
+- `PopupWithImage`: Image preview popup
+- `PopupWithConfirmation`: Confirmation dialogs
+- `UserInfo`: Manages user profile information
+- `FormValidator`: Handles form validation

@@ -23,11 +23,28 @@
       </header>
       <main>
         <section class="profile">
-          <img
-            class="profile__avatar"
-            src="./images/Avatar.jpg"
-            alt="Foto de perfil Jacques Cousteau"
-          />
+          <div class="profile__avatar-container">
+            <img
+              class="profile__avatar"
+              src="./images/Avatar.jpg"
+              alt="Foto de perfil Jacques Cousteau"
+            />
+            <div class="profile__avatar-overlay">
+              <svg
+                class="profile__avatar-edit-icon"
+                width="26"
+                height="26"
+                viewBox="0 0 26 26"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M26 3.45351L6.76981 22.7932L3.33585 19.2903L22.517 0L26 3.45351ZM0 26L5.10189 24.4706L1.52075 21.0171L0 26Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+          </div>
           <div class="profile__info">
             <div class="profile__info-first-line">
               <p class="profile__name">Jacques Cousteau</p>
@@ -126,6 +143,35 @@
           alt="Visualização ampliada do local"
         />
         <p class="popup__image-caption"></p>
+      </div>
+    </div>
+
+    <div class="popup popup_type_confirm-delete">
+      <div class="popup__container">
+        <button class="popup__close-button"></button>
+        <form class="popup__form" name="confirm-delete-form">
+          <p class="popup__form-title">Tem certeza?</p>
+          <button class="popup__save-button" type="submit">Sim</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="popup popup_type_edit-avatar">
+      <div class="popup__container">
+        <button class="popup__close-button"></button>
+        <form class="popup__form" name="edit-avatar-form">
+          <p class="popup__form-title">Alterar a foto do perfil</p>
+          <input
+            class="popup__form-input"
+            id="avatar-url"
+            name="avatar-url"
+            type="url"
+            placeholder="https://somewebsite.com/someimage.jpg"
+            required
+          />
+          <span class="popup__input-error" id="avatar-url-error"></span>
+          <button class="popup__save-button" type="submit">Salvar</button>
+        </form>
       </div>
     </div>
 

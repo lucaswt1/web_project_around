@@ -1,9 +1,22 @@
 export default class Card {
-  constructor(data, templateSelector, handleCardClick) {
+  constructor(
+    data,
+    templateSelector,
+    handleCardClick,
+    handleLikeClick,
+    handleDeleteClick,
+    currentUserId
+  ) {
     this._name = data.name;
     this._link = data.link;
+    this._id = data._id;
+    this._isLiked = data.isLiked;
+    this._owner = data.owner;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
+    this._handleLikeClick = handleLikeClick;
+    this._handleDeleteClick = handleDeleteClick;
+    this._currentUserId = currentUserId;
   }
 
   _getTemplate() {
@@ -16,12 +29,20 @@ export default class Card {
   }
 
   _handleLikeCard() {
-    this._likeButton.classList.toggle("elements__like-button_active");
+    this._handleLikeClick(this._id, this._isLiked);
+  }
+
+  setLikeState(isLiked) {
+    this._isLiked = isLiked;
+    if (this._isLiked) {
+      this._likeButton.classList.add("elements__like-button_active");
+    } else {
+      this._likeButton.classList.remove("elements__like-button_active");
+    }
   }
 
   _handleDeleteCard() {
-    this._element.remove();
-    this._element = null;
+    this._handleDeleteClick(this._id, this._element);
   }
 
   _setEventListeners() {
@@ -47,6 +68,12 @@ export default class Card {
     this._cardImage.alt = `Fotografia de ${this._name}`;
     this._cardTitle.textContent = this._name;
 
+    // Mostrar/esconder lixeira baseado na propriedade do cartão
+    if (this._owner !== this._currentUserId) {
+      this._deleteButton.style.display = "none";
+    }
+
+    this.setLikeState(this._isLiked);
     this._setEventListeners();
 
     return this._element;
