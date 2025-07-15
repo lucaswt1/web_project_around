@@ -30,7 +30,7 @@ function loadAppInfo() {
         job: userData.about,
         avatar: userData.avatar,
       });
-      cardList.renderItems(cards);
+      cardList.renderItems(cards.reverse());
     })
     .catch((error) => {
       console.log("Erro ao carregar dados da aplicação:", error);
